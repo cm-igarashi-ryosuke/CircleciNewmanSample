@@ -6,9 +6,19 @@ executors:
     docker:
       - image: circleci/node:10.10-stretch
 workflows:
-  commit:
+  # commit:
+  #   jobs:
+  #     - newman-collection-run
+  nightly:
     jobs:
       - newman-collection-run
+    triggers:
+      - schedule:
+          cron: "00 15 * * *" # UTC
+          filters:
+            branches:
+              only:
+                - master
 jobs:
   newman-collection-run:
     # executor: newman/postman-newman-docker
