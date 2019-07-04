@@ -1,14 +1,23 @@
 version: 2.1
-orbs:
-  newman: postman/newman@0.0.2
+# orbs:
+#   newman: postman/newman@0.0.2
+executors:
+  node10-executor:
+    docker:
+      - image: circleci/node:10.10-stretch
 workflows:
   commit:
     jobs:
       - newman-collection-run
 jobs:
   newman-collection-run:
-    executor: newman/postman-newman-docker
+    # executor: newman/postman-newman-docker
+    # steps:
+    #   - checkout
+    #   - newman/newman-run:
+    #       collection: ./postman/collection.json
+    executor: node10-executor
     steps:
       - checkout
-      - newman/newman-run:
-          collection: ./postman/collection.json
+      - run: sudo npm install -g newman
+      - run: newman run ./postman/collection.json
